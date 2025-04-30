@@ -1,0 +1,99 @@
+Sub CorrigerApostrophesEtNTilde()
+    Dim oDoc As Object
+    Dim oReplace As Object
+    Dim i As Integer
+    Dim fautesN(29) As String
+
+    oDoc = ThisComponent
+
+    ' === 1. Correction des apostrophes typographiques vers apostrophe droite '
+    Dim apostrophesTypo(2) As String
+    apostrophesTypo(0) = "’"  ' U+2019
+    apostrophesTypo(1) = "‘"  ' U+2018
+    apostrophesTypo(2) = "ʾ"  ' U+02BC
+
+    For i = LBound(apostrophesTypo) To UBound(apostrophesTypo)
+        oReplace = oDoc.createReplaceDescriptor()
+        With oReplace
+            .SearchString = apostrophesTypo(i)
+            .ReplaceString = "'"
+            .SearchAll = True
+        End With
+        oDoc.replaceAll(oReplace)
+    Next i
+
+    ' === 2. Remplacement des erreurs de ñ
+    fautesN(0) = "164n": fautesN(1) = "1n64": fautesN(2) = "16n4"
+    fautesN(3) = "n164": fautesN(4) = "n 164": fautesN(5) = "164 n"
+    fautesN(6) = "164n'": fautesN(7) = "n~": fautesN(8) = "én"
+    fautesN(9) = "n´": fautesN(10) = "n`": fautesN(11) = "n^"
+    fautesN(12) = "n¨": fautesN(13) = "n´´": fautesN(14) = "eñe"
+
+    ' === 3. Remplacement des erreurs de Ñ
+    fautesN(15) = "165n": fautesN(16) = "1N65": fautesN(17) = "N165"
+    fautesN(18) = "165N": fautesN(19) = "165 n": fautesN(20) = "N~"
+    fautesN(21) = "N´": fautesN(22) = "N`": fautesN(23) = "N^"
+    fautesN(24) = "N¨": fautesN(25) = "N´´": fautesN(26) = "ENYE"
+    fautesN(27) = "EÑE": fautesN(28) = "Enye": fautesN(29) = "Eñe"
+
+    ' Remplacement fautes ñ
+    For i = 0 To 14
+        oReplace = oDoc.createReplaceDescriptor()
+        With oReplace
+            .SearchString = fautesN(i)
+            .ReplaceString = "ñ"
+            .SearchAll = True
+        End With
+        oDoc.replaceAll(oReplace)
+    Next i
+
+    ' Remplacement fautes Ñ
+    For i = 15 To 29
+        oReplace = oDoc.createReplaceDescriptor()
+        With oReplace
+            .SearchString = fautesN(i)
+            .ReplaceString = "Ñ"
+            .SearchAll = True
+        End With
+        oDoc.replaceAll(oReplace)
+    Next i
+
+    ' === 4. Raccourcis personnalisés
+    ' "én" → "ñ"
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "én"
+        .ReplaceString = "ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    ' "éN" → "Ñ"
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "éN"
+        .ReplaceString = "Ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    ' "$n" → "ñ"
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "$n"
+        .ReplaceString = "ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    ' "%n" → "Ñ"
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "%n"
+        .ReplaceString = "Ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    MsgBox "Toutes les apostrophes et ñ/Ñ ont été corrigées.", 64, "Terminé"
+End Sub
