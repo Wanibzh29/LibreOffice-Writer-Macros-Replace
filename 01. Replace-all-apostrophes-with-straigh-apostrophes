@@ -1,0 +1,24 @@
+Sub RemplacerToutesLesApostrophesTypographiques
+    Dim oDoc As Object
+    Dim oReplace As Object
+    Dim apostrophesTypo(2) As String
+
+    ' Liste des apostrophes typographiques courantes
+    apostrophesTypo(0) = "’"   ' U+2019
+    apostrophesTypo(1) = "‘"   ' U+2018
+    apostrophesTypo(2) = "ʼ"   ' U+02BC - apostrophe modifier letter (utilisée parfois)
+
+    oDoc = ThisComponent
+
+    For i = LBound(apostrophesTypo) To UBound(apostrophesTypo)
+        oReplace = oDoc.createReplaceDescriptor()
+        With oReplace
+            .SearchString = apostrophesTypo(i)
+            .ReplaceString = "'"
+            .SearchAll = True
+        End With
+        oDoc.replaceAll(oReplace)
+    Next i
+
+    MsgBox "Toutes les apostrophes typographiques ont été remplacées par l'apostrophe droite (').", 64, "Remplacement terminé"
+End Sub
