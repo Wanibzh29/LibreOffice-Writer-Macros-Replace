@@ -1,0 +1,20 @@
+Sub SupprimerEspacesMultiples()
+    Dim oDoc As Object
+    Dim oReplace As Object
+    Dim i As Integer
+
+    oDoc = ThisComponent
+
+    ' Répéter le remplacement plusieurs fois pour s'assurer qu'il ne reste qu'un espace
+    For i = 1 To 10 ' On limite à 10 passes pour éviter une boucle infinie
+        oReplace = oDoc.createReplaceDescriptor()
+        With oReplace
+            .SearchString = "  "  ' Deux espaces
+            .ReplaceString = " "  ' Un espace
+            .SearchAll = True
+        End With
+        oDoc.replaceAll(oReplace)
+    Next i
+
+    MsgBox "Tous les espaces multiples ont été réduits à un seul.", 64, "Terminé"
+End Sub
