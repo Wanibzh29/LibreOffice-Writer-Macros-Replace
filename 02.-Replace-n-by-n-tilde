@@ -1,0 +1,94 @@
+Sub RemplacerErreursParTildeN
+    Dim oDoc As Object
+    Dim oReplace As Object
+    Dim erreurs(29) As String ' Réduire à 30 erreurs
+    Dim i As Integer
+
+    ' Liste des erreurs courantes associées à "164" (ñ) et "165" (Ñ)
+    erreurs(0) = "164n"
+    erreurs(1) = "1n64"
+    erreurs(2) = "164n~"
+    erreurs(3) = "1n64n"
+    erreurs(4) = "164 n"
+    erreurs(5) = "164N"
+    erreurs(6) = "16n4"
+    erreurs(7) = "164n'"
+    erreurs(8) = "164n"
+    erreurs(9) = "164n^"
+    erreurs(10) = "164n´"
+    erreurs(11) = "n164"
+    erreurs(12) = "n164n"
+    erreurs(13) = "n16"
+    erreurs(14) = "164 n "
+    
+    erreurs(15) = "1n64 "
+    erreurs(16) = "165n"
+    erreurs(17) = "1N65"
+    erreurs(18) = "165n~"
+    erreurs(19) = "1N65n"
+    erreurs(20) = "165 N"
+    erreurs(21) = "165n'"
+    erreurs(22) = "165n"
+    erreurs(23) = "165n^"
+    erreurs(24) = "165n´"
+    erreurs(25) = "N165"
+    erreurs(26) = "N165n"
+    erreurs(27) = "N16"
+    erreurs(28) = "165 N "
+    erreurs(29) = "1N65 "
+
+    oDoc = ThisComponent
+
+    ' Remplacer toutes les erreurs connues
+    For i = LBound(erreurs) To UBound(erreurs)
+        oReplace = oDoc.createReplaceDescriptor()
+        With oReplace
+            .SearchString = erreurs(i)
+            If i <= 14 Then
+                .ReplaceString = "ñ"
+            Else
+                .ReplaceString = "Ñ"
+            End If
+            .SearchAll = True
+        End With
+        oDoc.replaceAll(oReplace)
+    Next i
+
+    ' Correction spécifique pour "én" → "ñ"
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "én"
+        .ReplaceString = "ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    ' Correction spécifique pour "éN" → "Ñ"
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "éN"
+        .ReplaceString = "Ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    ' Ajout des raccourcis $n → ñ
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "$n"
+        .ReplaceString = "ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    ' Ajout du raccourci $N → Ñ
+    oReplace = oDoc.createReplaceDescriptor()
+    With oReplace
+        .SearchString = "%N"
+        .ReplaceString = "Ñ"
+        .SearchAll = True
+    End With
+    oDoc.replaceAll(oReplace)
+
+    MsgBox "Toutes les erreurs et substitutions ont été corrigées.", 64, "Remplacement terminé"
+End Sub
