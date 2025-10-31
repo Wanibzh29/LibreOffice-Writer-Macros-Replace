@@ -1,7 +1,7 @@
-Sub RemplacerErreursParTildeN
+Sub Remplacer_Par_N_Tilde()
     Dim oDoc As Object
     Dim oReplace As Object
-    Dim erreurs(29) As String ' Réduire à 30 erreurs
+    Dim erreurs(29) As String
     Dim i As Integer
 
     ' Liste des erreurs courantes associées à "164" (ñ) et "165" (Ñ)
@@ -54,25 +54,7 @@ Sub RemplacerErreursParTildeN
         oDoc.replaceAll(oReplace)
     Next i
 
-    ' Correction spécifique pour "én" → "ñ"
-    oReplace = oDoc.createReplaceDescriptor()
-    With oReplace
-        .SearchString = "én"
-        .ReplaceString = "ñ"
-        .SearchAll = True
-    End With
-    oDoc.replaceAll(oReplace)
-
-    ' Correction spécifique pour "éN" → "Ñ"
-    oReplace = oDoc.createReplaceDescriptor()
-    With oReplace
-        .SearchString = "éN"
-        .ReplaceString = "Ñ"
-        .SearchAll = True
-    End With
-    oDoc.replaceAll(oReplace)
-
-    ' Ajout des raccourcis $n → ñ
+    ' Ajout du raccourci $n → ñ
     oReplace = oDoc.createReplaceDescriptor()
     With oReplace
         .SearchString = "$n"
@@ -81,7 +63,7 @@ Sub RemplacerErreursParTildeN
     End With
     oDoc.replaceAll(oReplace)
 
-    ' Ajout du raccourci $N → Ñ
+    ' Ajout du raccourci %N → Ñ
     oReplace = oDoc.createReplaceDescriptor()
     With oReplace
         .SearchString = "%N"
