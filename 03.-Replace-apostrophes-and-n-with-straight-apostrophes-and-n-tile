@@ -25,7 +25,7 @@ Sub CorrigerApostrophesEtNTilde()
     ' === 2. Remplacement des erreurs de ñ
     fautesN(0) = "164n": fautesN(1) = "1n64": fautesN(2) = "16n4"
     fautesN(3) = "n164": fautesN(4) = "n 164": fautesN(5) = "164 n"
-    fautesN(6) = "164n'": fautesN(7) = "n~": fautesN(8) = "én"
+    fautesN(6) = "164n'": fautesN(7) = "n~": fautesN(8) = "~n"
     fautesN(9) = "n´": fautesN(10) = "n`": fautesN(11) = "n^"
     fautesN(12) = "n¨": fautesN(13) = "n´´": fautesN(14) = "eñe"
 
